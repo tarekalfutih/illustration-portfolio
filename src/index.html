@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tarek Alfutih · Children's book illustrator</title>
+<meta name="description" content="Tarek Alfutih is an illustrator and designer in Gothenburg, Sweden, illustrating children's books since 2008, with more than 20 published titles.">
+<link rel="icon" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
+<script>
+/* Pick the layout before first paint so the header and hero never flash at the wrong size. */
+(function () {
+  var vw = document.documentElement.clientWidth, vh = window.innerHeight, land = vw > vh;
+  var bp = vw >= 1680 ? 0 : vw >= 1300 ? 1 : (vw >= 1000 || (land && vw >= 600)) ? 2 : vw >= 600 ? 3 : land ? 2 : 4;
+  var r = document.documentElement;
+  r.setAttribute('data-bp', bp);
+  r.style.setProperty('--z', vw / [1920, 1440, 1180, 820, 390][bp]);
+  r.style.setProperty('--hdr', Math.round([80, 80, 72, 72, 60][bp] * vw / [1920, 1440, 1180, 820, 390][bp]) + 'px');
+})();
+</script>
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<main id="top">
+
+<div class="hdr">
+  <div class="hdr-art">
+    <div class="hdr-bar">
+      <a href="#" class="hdr-logo" aria-label="Tarek Alfutih, back to top">Tarek Alfutih</a>
+      <nav class="hdr-nav" aria-label="Main">
+        <a href="#intro">About</a>
+        <a href="#work">Work</a>
+        <a href="#contact" class="hdr-cta">Contact</a>
+      </nav>
+      <button class="hdr-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="hdr-menu"><span></span><span></span><span></span></button>
+    </div>
+    <nav class="hdr-menu" id="hdr-menu" aria-label="Main" hidden>
+      <a href="#intro">About</a>
+      <a href="#work">Work</a>
+      <a href="#contact" class="hdr-cta">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero" data-hero>
+  <!-- js/hero.js builds the artboard for the current layout -->
+</header>
+
+<div class="hero-next">
+  <button type="button" class="hero-next-btn" data-scroll-intro aria-label="Go to introduction" title="Go to introduction">
+    <svg width="34" height="20" viewBox="0 0 34 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="bob"><path d="M3 4l14 12L31 4"/></svg>
+  </button>
+</div>
+
+<section id="intro" class="intro" aria-labelledby="intro-h">
+  <div class="intro-top" data-intro>
+    <h2 id="intro-h" data-anim="head"><span>Hello</span> <span>and</span> <span>welcome</span> <span>to</span> <span>my</span> <span>portfolio!</span></h2>
+    <div class="intro-text" data-anim="para">
+      <p>I’m an illustrator and designer based in Gothenburg, Sweden. I’ve been illustrating children’s books since 2008, with more than 20 published titles.</p>
+      <p>I also hold a Master’s degree in Interaction Design from Chalmers University of Technology. Combining illustration with UX design allows me to create engaging, meaningful, and user-friendly experiences.</p>
+      <p>You can explore my UX and Product Design work at <a href="https://tarekdesign.se" target="_blank" rel="noopener">tarekdesign.se</a>.</p>
+    </div>
+    <div class="intro-rule" data-anim="rule"></div>
+  </div>
+
+  <!-- Wide layouts: cropped 2.75:1 grid -->
+  <div class="collage collage-wide" data-grid>
+    <div class="cg-col">
+      <div class="cg-cell"><img src="images/sw-forest.jpg" alt="Forest background" sizes="30vw"></div>
+      <div class="cg-pair">
+        <div class="cg-cell"><img src="images/sw-akvarel.jpg" alt="Skräphjältarna" sizes="15vw"></div>
+        <div class="cg-cell"><img src="images/sw-maths.jpg" alt="Maths teaching material" sizes="15vw"></div>
+      </div>
+    </div>
+    <div class="cg-cell cg-portrait"><img src="images/portrait.jpg" alt="Tarek Alfutih" sizes="25vw"></div>
+    <div class="cg-col">
+      <div class="cg-pair">
+        <div class="cg-cell"><img src="images/sw-crocodile.jpg" alt="Crocodile at night" sizes="15vw"></div>
+        <div class="cg-cell"><img src="images/sw-cat.jpg" alt="God Jul cat card" sizes="15vw"></div>
+      </div>
+      <div class="cg-cell"><img src="images/sw-redhair-hd.jpg" alt="Children playing in the park" sizes="30vw"></div>
+    </div>
+  </div>
+
+  <!-- Tablet portrait and phone: uncropped rows, each cell grows by its image's aspect ratio -->
+  <div class="collage collage-rows" data-grid>
+    <div class="cr-row">
+      <div class="cr-cell" style="--ar:2.0000"><img src="images/sw-forest.jpg" alt="Forest background" sizes="50vw"></div>
+      <div class="cr-cell" style="--ar:1.9342"><img src="images/sw-redhair-hd.jpg" alt="Children playing in the park" sizes="50vw"></div>
+    </div>
+    <div class="cr-row">
+      <div class="cr-cell" style="--ar:1.0067"><img src="images/sw-akvarel.jpg" alt="Skräphjältarna" sizes="34vw"></div>
+      <div class="cr-cell cg-portrait" style="--ar:0.9834"><img src="images/portrait.jpg" alt="Tarek Alfutih" sizes="34vw"></div>
+      <div class="cr-cell" style="--ar:1.0000"><img src="images/sw-crocodile.jpg" alt="Crocodile at night" sizes="34vw"></div>
+    </div>
+    <div class="cr-row">
+      <div class="cr-cell" style="--ar:1.0929"><img src="images/sw-maths.jpg" alt="Maths teaching material" sizes="50vw"></div>
+      <div class="cr-cell" style="--ar:1.2072"><img src="images/sw-cat.jpg" alt="God Jul cat card" sizes="50vw"></div>
+    </div>
+  </div>
+
+  <div class="ruled-link">
+    <span></span>
+    <a href="#work" aria-label="Explore my work">Explore My Work<span class="circ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="bob"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg></span></a>
+    <span></span>
+  </div>
+</section>
+
+<section id="work" class="work" aria-labelledby="work-h">
+  <div class="work-head">
+    <h2 id="work-h" class="h-xl">Selected work</h2>
+    <p class="work-hint"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6"/></svg>Click any image to open it full size and zoom in.</p>
+  </div>
+
+  <div class="cats" data-cats>
+    <div class="cats-in">
+      <nav class="cats-row" aria-label="Work categories">
+        <button type="button" data-chip="picture-books">Picture books</button>
+        <button type="button" data-chip="covers">Book covers</button>
+        <button type="button" data-chip="backgrounds">Game backgrounds</button>
+        <button type="button" data-chip="cards">Card design</button>
+        <button type="button" data-chip="animated">Animated</button>
+        <button type="button" data-chip="more">More illustrations</button>
+      </nav>
+    </div>
+  </div>
+
+  <div class="work-body">
+
+    <section id="picture-books" class="cat" aria-label="Picture books">
+      <div class="books">
+
+        <article class="book book-sk">
+          <div class="book-sk-bg" aria-hidden="true"></div>
+          <div class="book-top">
+            <img data-zoom src="images/skraphjaltarna-cover.png" alt="Skräphjältarna book cover" class="book-cover" style="--rot:-2deg" sizes="(max-width:800px) 80vw, 28vw">
+            <div class="book-info">
+              <div class="book-title">
+                <h3 class="rainbow">Skräphjältarna</h3>
+                <span>2023 · Olika Förlag</span>
+              </div>
+              <span class="book-sold">6,000+ copies sold</span>
+              <div class="book-copy">
+                <p>An illustrated picture book that encourages children to discover recycling through playful characters who turn old things into something new.</p>
+                <p>Created in collaboration with Rinkeby-Kista district administration in Stockholm.</p>
+              </div>
+              <div class="book-btns">
+                <a href="https://olika.nu/products/skraphjaltarna" target="_blank" rel="noopener" class="btn-fill">Buy the book ↗</a>
+                <a href="https://cdn.shopify.com/s/files/1/0553/0694/4572/files/skraphjaltarna_PROVLAS.pdf" target="_blank" rel="noopener" class="btn-line">Read a preview ↗</a>
+              </div>
+            </div>
+          </div>
+          <div class="book-pages">
+            <span class="eyebrow" style="color:#f2c14e">Selected pages from the book</span>
+            <div class="spreads">
+              <img data-zoom src="images/sk-spread-party.jpg" alt="Skräphjältarna party in the meadow" loading="lazy">
+              <img data-zoom src="images/sk-spread-metal.jpg" alt="Magiska Metall and the metal cycle" loading="lazy">
+              <img data-zoom src="images/sk-spread-compost.jpg" alt="Coola Kompost and the food-waste cycle" loading="lazy">
+              <img data-zoom src="images/sk-spread-redhair.jpg" alt="Children playing together in the park" loading="lazy">
+              <img data-zoom src="images/sk-spread-park.jpg" alt="Saying goodbye to Skräphjältarna in the park" loading="lazy">
+            </div>
+          </div>
+        </article>
+
+        <article class="book book-isl">
+          <div class="book-isl-bg" aria-hidden="true"></div>
+          <div class="book-top">
+            <img data-zoom src="images/islams-front-web.jpg" alt="Islams fem pelare med Lamby &amp; Bäbä book cover" class="book-cover" style="--rot:2deg" loading="lazy" sizes="(max-width:800px) 80vw, 28vw">
+            <div class="book-info">
+              <div class="book-title">
+                <h3 class="rainbow rainbow-isl">Islams fem pelare med Lamby &amp; Bäbä</h3>
+                <span>2024 · Ilm Bokförlag</span>
+              </div>
+              <div class="book-copy">
+                <p>A picture book that introduces children to the five pillars of Islam, following the lambs Lamby and Bäbä on a hot-air balloon adventure.</p>
+                <p>I was responsible for the entire visual production: sketches, character illustrations, page layouts, cover design and print-ready files.</p>
+              </div>
+            </div>
+          </div>
+          <div class="book-pages">
+            <span class="eyebrow" style="color:#ffe3a3">Selected pages from the book</span>
+            <div class="isl-grid">
+              <img data-zoom src="images/islams-p3.jpg" alt="Lamby and Bäbä introduce themselves" loading="lazy" sizes="(max-width:800px) 100vw, 45vw">
+              <img data-zoom src="images/islams-p8.jpg" alt="The third pillar: almsgiving" loading="lazy" sizes="(max-width:800px) 100vw, 45vw">
+              <img data-zoom src="images/islams-p9.jpg" alt="The fourth pillar: fasting in Ramadan" loading="lazy" sizes="(max-width:800px) 100vw, 45vw">
+              <img data-zoom src="images/islams-p10.jpg" alt="The Qur'an and Eid al-Fitr" loading="lazy" sizes="(max-width:800px) 100vw, 45vw">
+              <img data-zoom src="images/islams-p11.jpg" alt="The fifth pillar: the pilgrimage to Makkah" loading="lazy" sizes="(max-width:800px) 100vw, 45vw">
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="covers" class="cat" aria-labelledby="covers-h">
+      <h2 id="covers-h" class="h-sub">Book covers</h2>
+      <div class="covers">
+        <div class="cover-magi" data-zoom-src="images/larandets-magi-cover.jpg" data-zoom-alt="Lärandets magi, book cover">
+          <div class="anim" data-anim-piece="magi">
+            <img src="images/larandets-magi-cover.jpg" alt="Lärandets magi, book cover illustrated by Tarek Alfutih" loading="lazy" sizes="(max-width:800px) 100vw, 40vw">
+            <canvas aria-hidden="true"></canvas>
+          </div>
+        </div>
+        <img data-zoom src="images/cv-jag-alskar-dig.jpg" alt="Jag älskar dig book cover" class="cover-jag" loading="lazy" sizes="(max-width:800px) 100vw, 40vw">
+      </div>
+    </section>
+
+    <section id="backgrounds" class="cat" aria-labelledby="bg-h">
+      <h2 id="bg-h" class="h-sub">Game backgrounds</h2>
+      <figure class="compare" data-compare style="--split:50%">
+        <img src="images/bg-forest-day.jpg" alt="Forest background, day" loading="lazy">
+        <img src="images/bg-forest-night.jpg" alt="Forest background, night" loading="lazy" class="compare-night">
+        <div class="compare-line" aria-hidden="true"><div>↔</div></div>
+        <span class="compare-tag compare-day" aria-hidden="true">Day</span>
+        <span class="compare-tag compare-nt" aria-hidden="true">Night</span>
+        <input type="range" min="0" max="100" value="50" aria-label="Compare day and night">
+      </figure>
+    </section>
+
+    <section id="cards" class="cat" aria-labelledby="cards-h">
+      <h2 id="cards-h" class="h-sub">Card design</h2>
+      <div class="card-head">
+        <h3>God Jul</h3>
+        <span>Christmas card and envelope: illustration, front, back and envelope design.</span>
+      </div>
+      <div class="cards">
+        <img data-zoom src="images/xm-mockup-1-wood-table.jpg" alt="God Jul card and envelope on a wooden table" loading="lazy" class="cards-big" sizes="(max-width:800px) 66vw, 50vw">
+        <img data-zoom src="images/xm-mockup-2-set.jpg" alt="Card front, card back, envelope front and envelope back" loading="lazy" sizes="(max-width:800px) 33vw, 25vw" style="background:#e8e6e4">
+        <img data-zoom src="images/xm-mockup-3-hero.jpg" alt="God Jul card with envelope" loading="lazy" sizes="(max-width:800px) 33vw, 25vw" style="background:#1d1d1d">
+      </div>
+    </section>
+
+    <section id="animated" class="cat" aria-labelledby="anim-h">
+      <h2 id="anim-h" class="h-sub">Animated illustrations</h2>
+      <figure class="anim-fig anim-friends" data-zoom-src="images/we-love-books.jpg" data-zoom-alt="Animal friends">
+        <div class="anim" data-anim-piece="friends">
+          <img src="images/we-love-books.jpg" alt="We Love Children's Books: animal friends gathered on chairs, illustrated by Tarek Alfutih" loading="lazy">
+          <canvas aria-hidden="true"></canvas>
+        </div>
+      </figure>
+      <figure class="anim-fig anim-happy" data-zoom-src="images/be-happy-anim.jpg" data-zoom-alt="Be Happy">
+        <div class="anim" data-anim-piece="happy">
+          <img src="images/be-happy-cutout.png" alt="Be Happy: a cheerful hamster in a party hat holding a red balloon, illustrated by Tarek Alfutih" loading="lazy">
+          <canvas aria-hidden="true"></canvas>
+        </div>
+      </figure>
+    </section>
+
+    <section id="more" class="cat" aria-labelledby="more-h">
+      <h2 id="more-h" class="h-sub">More illustrations</h2>
+      <div class="more">
+        <div class="more-row" style="max-width:calc((100svh - 180px) * 2.17)">
+          <img data-zoom src="images/br-wheat.jpg" alt="Blue rabbit in the wheat field" loading="lazy" style="--ar:1.087;aspect-ratio:1800/1656" sizes="(max-width:600px) 100vw, 50vw">
+          <img data-zoom src="images/br-palm.jpg" alt="Blue rabbit running from the wolf" loading="lazy" style="--ar:1.087;aspect-ratio:1800/1656" sizes="(max-width:600px) 100vw, 50vw">
+        </div>
+        <div class="more-row" style="max-width:calc((100svh - 180px) * 2.14)">
+          <img data-zoom src="images/ani-stork.jpg" alt="Stork flying over the river" loading="lazy" style="--ar:.714;aspect-ratio:1286/1800" sizes="(max-width:600px) 50vw, 33vw">
+          <img data-zoom src="images/ani-rabbits.jpg" alt="The rabbit king and the young rabbits" loading="lazy" style="--ar:.714;aspect-ratio:1286/1800" sizes="(max-width:600px) 50vw, 33vw">
+          <img data-zoom src="images/ani-ducks.jpg" alt="Two ducks and a turtle" loading="lazy" style="--ar:.714;aspect-ratio:1286/1800" sizes="(max-width:600px) 50vw, 33vw">
+        </div>
+        <div class="more-row" style="max-width:calc((100svh - 180px) * 2.80)">
+          <img data-zoom src="images/ani-flamingo.jpg" alt="Flamingo in the lake" loading="lazy" style="--ar:.714;aspect-ratio:1286/1800" sizes="(max-width:600px) 50vw, 25vw">
+          <img data-zoom src="images/br-tree.jpg" alt="Blue rabbit meets the wolf under the tree" loading="lazy" style="--ar:1.087;aspect-ratio:1800/1656" sizes="(max-width:600px) 100vw, 40vw">
+          <img data-zoom src="images/sw-crocodile.jpg" alt="Pink crocodile resting under the moon" loading="lazy" style="--ar:1;aspect-ratio:1;background:#1b2550" sizes="(max-width:600px) 100vw, 35vw">
+        </div>
+      </div>
+    </section>
+
+  </div>
+</section>
+
+<div class="ruled-link to-top">
+  <span></span>
+  <button type="button" data-to-top aria-label="Back to top">Back to top<span class="circ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg></span></button>
+  <span></span>
+</div>
+
+<section id="contact" class="contact" aria-labelledby="contact-h">
+  <h2 id="contact-h" class="h-xl">Let's make a book together.</h2>
+  <div class="contact-grid">
+    <a href="mailto:tarek.alfutih@hotmail.com"><span class="c-lbl">Email</span><span class="c-val" style="word-break:break-word">tarek.alfutih@hotmail.com</span></a>
+    <a href="tel:+46764242132"><span class="c-lbl">Phone</span><span class="c-val">+46 76 424 21 32</span></a>
+    <a href="https://www.instagram.com/tarek.illustration/" target="_blank" rel="noopener"><span class="c-lbl">Instagram</span><span class="c-val">@tarek.illustration ↗</span></a>
+    <a href="http://www.linkedin.com/in/tarek-alfutih" target="_blank" rel="noopener"><span class="c-lbl">LinkedIn</span><span class="c-val">tarek-alfutih ↗</span></a>
+  </div>
+  <footer class="foot">
+    <img src="images/logo.png" alt="Tarek Alfutih logo" width="96" loading="lazy">
+    <span>© 2026 Tarek Alfutih · Gothenburg. All illustrations on this site are protected by copyright and may not be used, copied or shared without written permission.</span>
+  </footer>
+</section>
+
+</main>
+
+<div class="lb" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+  <div class="lb-sc"><img alt="" draggable="false"></div>
+  <div class="lb-top">
+    <span class="lb-cap"></span>
+    <div class="lb-tools">
+      <button type="button" class="lb-btn" data-lb="out" aria-label="Zoom out" title="Zoom out"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M5 12h14"/></svg></button>
+      <span class="lb-pct">100%</span>
+      <button type="button" class="lb-btn" data-lb="in" aria-label="Zoom in" title="Zoom in"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M5 12h14M12 5v14"/></svg></button>
+      <button type="button" class="lb-btn lb-close" data-lb="close" aria-label="Close" title="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+  </div>
+  <button type="button" class="lb-btn lb-arrow lb-prev" data-lb="prev" aria-label="Previous image" title="Previous image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button type="button" class="lb-btn lb-arrow lb-next" data-lb="next" aria-label="Next image" title="Next image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="lb-hint"></div>
+</div>
+
+<script src="js/hero.js" defer></script>
+<script src="js/main.js" defer></script>
+<script src="js/anim.js" defer></script>
+</body>
+</html>
