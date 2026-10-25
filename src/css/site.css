@@ -179,7 +179,7 @@ button { font: inherit; }
 .book-pages { position: relative; display: flex; flex-direction: column; gap: 20px; }
 .book-sk .book-pages { margin-top: clamp(40px, 6vw, 72px); }
 .spreads { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(16px, 2vw, 32px); }
-.spreads img { display: block; width: min(100%, calc((100svh - 180px) * 2000 / 1412)); height: auto; aspect-ratio: 2/1; object-fit: cover; background: #1b2550; box-shadow: 0 10px 24px rgba(0, 0, 0, .35); }
+.spreads img { display: block; width: 100%; height: auto; aspect-ratio: 2/1; object-fit: cover; background: #1b2550; box-shadow: 0 10px 24px rgba(0, 0, 0, .35); }
 .isl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, max(320px, calc(50% - 16px))), 1fr)); gap: clamp(16px, 2vw, 32px); align-items: start; }
 .isl-grid img { display: block; width: 100%; height: auto; aspect-ratio: 2000/1412; background: #2a1640; box-shadow: 0 10px 24px rgba(0, 0, 0, .35); }
 
@@ -215,9 +215,8 @@ button { font: inherit; }
 .card-head { display: flex; flex-direction: column; gap: 6px; }
 .card-head h3 { margin: 0; font: 800 clamp(22px, 2vw, 30px)/1.1 Archivo; }
 .card-head span { font: 400 15px/1.4 Archivo; }
-.cards { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-rows: auto auto; gap: clamp(8px, 1vw, 14px); width: min(100%, calc((100svh - 380px) * 2.2)); }
+.cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: clamp(8px, 1vw, 14px); width: min(100%, calc((100svh - 300px) * 3)); }
 .cards img { display: block; width: 100%; height: auto; aspect-ratio: 1600/1067; object-fit: cover; }
-.cards img.cards-big { grid-row: span 2; height: 100%; aspect-ratio: auto; background: #5a3b26; }
 
 /* More illustrations */
 .more { display: flex; flex-direction: column; gap: clamp(10px, 1.2vw, 16px); }

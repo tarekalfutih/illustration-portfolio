@@ -98,6 +98,48 @@
     io.observe(box);
   })();
 
+  /* ---------- Text reveal ----------
+     Text outside the hero fades up once as it enters the viewport; elements entering together
+     stagger by 120ms (max 5 steps). Header, hero, category bar and buttons are left alone. */
+  (function setupReveal() {
+    if (reduced || !Element.prototype.animate) return;
+    var main = document.querySelector('main');
+    var SEL = 'h1,h2,h3,h4,p,li,figcaption,blockquote,.eyebrow,#contact a';
+    var anims = new Map();
+    var io = new IntersectionObserver(function (es) {
+      var n = 0;
+      es.filter(function (e) { return e.isIntersecting; })
+        .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; })
+        .forEach(function (e) {
+          var a = anims.get(e.target);
+          io.unobserve(e.target);
+          if (!a) return;
+          a.effect.updateTiming({ delay: Math.min(n++, 5) * 120 });
+          a.play();
+        });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    var ok = function (el) {
+      return !el.closest('header, button, .hdr, .cats') && el.closest('#intro, #work, #contact, main > div');
+    };
+    var list = [].slice.call(main.querySelectorAll(SEL));
+    // plus leaf text spans that aren't inside a link (book meta, "6,000+ copies sold", Day/Night tags…)
+    main.querySelectorAll('span').forEach(function (s) {
+      if (!s.children.length && s.textContent.trim() && !s.closest('a')) list.push(s);
+    });
+    var picked = [];
+    list.forEach(function (el) {
+      if (picked.indexOf(el) >= 0 || !ok(el)) return;
+      if (picked.some(function (o) { return o.contains(el); })) return;
+      picked.push(el);
+      if (el.getBoundingClientRect().bottom < 0) return;
+      var a = el.animate([{ opacity: 0, transform: 'translateY(40px)' }, { opacity: 1, transform: 'none' }],
+        { duration: 900, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
+      a.pause();
+      anims.set(el, a);
+      io.observe(el);
+    });
+  })();
+
   /* ---------- Category bar ----------
      Active chip = the last section whose top has passed header + bar + 40px. */
   var CATS = ['picture-books', 'covers', 'backgrounds', 'cards', 'animated', 'more'];
