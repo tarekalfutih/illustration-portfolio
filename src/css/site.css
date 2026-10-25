@@ -23,8 +23,6 @@ button { font: inherit; }
 @keyframes hmHue { to { background-position: 300% 0; } }
 @keyframes hmBob { 0%, 100% { transform: translateY(-3px); } 50% { transform: translateY(4px); } }
 @keyframes pfWisp { 0% { transform: translateY(30px) scaleY(.6); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-170px) scaleY(1.3); opacity: 0; } }
-@keyframes pfWord { 0% { opacity: 0; transform: translateY(45%) rotate(-5deg); } 100% { opacity: 1; transform: none; } }
-@keyframes pfDraw { to { stroke-dashoffset: 0; } }
 .bob { display: block; animation: hmBob 1.6s ease-in-out infinite; }
 
 /* ---------- Header ---------- */
@@ -79,10 +77,7 @@ button { font: inherit; }
 .hero-eye.shut > b { height: 100%; }
 .hero-txt { position: absolute; display: flex; flex-direction: column; color: #fff; }
 .hero-h { font-weight: 800; color: #fff; }
-.hero-h .w { display: inline-block; position: relative; animation: pfWord .7s cubic-bezier(.2, .9, .25, 1.25) both; }
 .hero-h .y { color: #f2c14e; }
-.hero-h svg { position: absolute; left: -4%; bottom: -.22em; width: 108%; height: .28em; overflow: visible; }
-.hero-h svg path { stroke-dasharray: 140; stroke-dashoffset: 140; animation: pfDraw .6s ease-out 1s forwards; }
 .hero-t { font-weight: 500; line-height: 1.3; color: #fff; }
 .hero-t .caret { color: #f2c14e; }
 .hero-smoke { position: absolute; overflow: visible; pointer-events: none; }
@@ -232,10 +227,13 @@ button { font: inherit; }
 /* ---------- Contact ---------- */
 .contact { background: var(--accent); color: #fff; padding: clamp(64px, 9vw, 128px) clamp(20px, 4vw, 56px) 40px; display: flex; flex-direction: column; gap: clamp(40px, 5vw, 64px); }
 .contact .h-xl { max-width: 900px; text-wrap: balance; }
-.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px 32px; }
-.contact-grid a { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: #fff; padding: 4px 0; }
-.contact-grid a:hover { color: #fff; opacity: .8; }
-.c-lbl { font: 600 13px Archivo; letter-spacing: .14em; text-transform: uppercase; }
+.contact-grid { display: flex; flex-wrap: wrap; gap: 28px clamp(40px, 5vw, 80px); }
+/* Padding with matching negative margin: the hover tint gets room without moving the layout. */
+.contact-grid a { display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: #fff; padding: 12px 16px; margin: -12px -16px; transition: background-color .15s ease; }
+.contact-grid a:hover { color: #fff; background: rgba(255, 255, 255, .16); }
+.contact-grid a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.c-lbl { display: flex; align-items: center; gap: 10px; font: 600 13px Archivo; letter-spacing: .14em; text-transform: uppercase; }
+.c-lbl svg { display: block; flex: none; }
 .c-val { font: 800 clamp(18px, 1.7vw, 24px)/1.2 Archivo; }
 .foot { display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: center; margin: 24px calc(-1 * clamp(20px, 4vw, 56px)) -40px; padding: 24px clamp(20px, 4vw, 56px); background: #fff; color: var(--ink); }
 .foot img { width: 96px; height: auto; display: block; flex: none; }
@@ -267,8 +265,6 @@ button { font: inherit; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .bob, .rainbow { animation: none; }
-  .hero-h .w { animation: none; }
-  .hero-h svg path { animation: none; stroke-dashoffset: 0; }
   .hero-smoke { display: none; }
   .collage img { transition: none; }
 }

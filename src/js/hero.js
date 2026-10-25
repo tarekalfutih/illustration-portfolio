@@ -1,5 +1,5 @@
 /* Hero: the pirate artboard for the current layout, with eyes that follow the mouse and blink,
-   smoke from the pipe, word pop-in headline and the typing line. Also owns the breakpoint:
+   smoke from the pipe, the headline and the typing line. Also owns the breakpoint:
    it sets <html data-bp>, --z, --zh and --hdr, and fires a "layout" event when they change. */
 (function () {
   'use strict';
@@ -91,18 +91,7 @@
 
   function headline(c) {
     var h = el('span', 'hero-h', 'font-size:' + c.txt.h + 'px;line-height:' + c.txt.lh + ';letter-spacing:' + c.txt.ls);
-    var y = el('span', 'y');
-    // "I draw <yellow>children's books.</yellow>"; each word pops in, then a brush line draws under "books."
-    ["I", "draw", "children's", "books."].forEach(function (w, i) {
-      var s = el('span', 'w', 'animation-delay:' + (.15 + i * .14) + 's');
-      s.textContent = w;
-      if (i === 3) s.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9 C 30 3, 60 12, 90 6 S 116 7, 118 5" fill="none" stroke="#d9643a" stroke-width="5" stroke-linecap="round"/></svg>');
-      var parent = i < 2 ? h : y;
-      if (i === 1 || i === 3) parent.appendChild(document.createTextNode(' '));
-      parent.appendChild(s);
-    });
-    h.appendChild(document.createTextNode(' '));
-    h.appendChild(y);
+    h.innerHTML = 'I draw <span class="y">children\'s books.</span>';
     return h;
   }
 

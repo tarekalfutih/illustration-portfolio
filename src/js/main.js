@@ -12,10 +12,26 @@
      Scroll so the target starts right under the sticky header, then re-check once scrolling ends:
      lazy images above the target can shift the layout on the way. */
   var fixTimer = 0;
+  var stickyH = function () { return hdrH() + bar.getBoundingClientRect().height; };
+  /* #work lands further down so the Skräphjältarna cover is fully in view. Desktop (≥ 1680px) also
+     shows the top 56px of the first spread, unless that would push the cover under the sticky bar.
+     Elsewhere: cover bottom + 24px, but never past #picture-books reaching the sticky bar. */
+  function workTop() {
+    var y = window.scrollY, rect = function (s) { return document.querySelector(s).getBoundingClientRect(); };
+    var top = rect('#work').top + y - hdrH(), cv = rect('.book-sk .book-cover');
+    var peek = window.innerWidth >= 1680 ? rect('.spreads img').top + y + 56 - window.innerHeight : null;
+    if (peek !== null && peek <= cv.top + y - stickyH() - 16) {
+      top = Math.max(top, peek);
+    } else {
+      var need = cv.bottom + y + 24 - window.innerHeight, cap = rect('#picture-books').top + y - stickyH();
+      top = Math.max(top, Math.min(need, cap));
+    }
+    return Math.max(0, top);
+  }
   function scrollToId(id, extra) {
     var el = document.getElementById(id); if (!el) return;
     var go = function () {
-      var top = Math.max(0, el.getBoundingClientRect().top + window.scrollY - hdrH() - (extra || 0));
+      var top = id === 'work' ? workTop() : Math.max(0, el.getBoundingClientRect().top + window.scrollY - hdrH() - (extra || 0));
       if (Math.abs(top - window.scrollY) > 2) window.scrollTo({ top: top, behavior: reduced ? 'auto' : 'smooth' });
     };
     go(); clearTimeout(fixTimer);
@@ -114,7 +130,8 @@
   });
 
   /* ---------- Lightbox ----------
-     Opens every zoomable image in the same section; click toggles 1× / 2.5× at the click point,
+     Opens every zoomable image in Selected work (all categories), or in the clicked image's own
+     section outside it; click toggles 1× / 2.5× at the click point,
      − / + step by .75 (1–4×), drag pans when zoomed. */
   var lb = document.querySelector('.lb'), sc = lb.querySelector('.lb-sc'), img = sc.querySelector('img');
   var cap = lb.querySelector('.lb-cap'), pct = lb.querySelector('.lb-pct'), hint = lb.querySelector('.lb-hint');
@@ -131,8 +148,8 @@
     img.style.width = Math.round(nat.w * fit * z) + 'px';
   }
   function chrome() {
-    var many = L.list.length > 1, cur = L.list[L.i];
-    cap.textContent = (many ? (L.i + 1) + ' / ' + L.list.length + '  ·  ' : '') + cur[1];
+    var many = L.list.length > 1;
+    cap.textContent = many ? (L.i + 1) + ' / ' + L.list.length : '';
     prev.hidden = next.hidden = !many;
     pct.textContent = Math.round(z * 100) + '%';
     img.classList.toggle('zoomed', z > 1);
@@ -150,7 +167,7 @@
     chrome();
   }
   function open(t) {
-    var sec = t.closest('section[id]') || document.body;
+    var sec = t.closest('#work') || t.closest('section[id]') || document.body;
     var list = [].filter.call(sec.querySelectorAll('img[data-zoom],[data-zoom-src]'), function (x) { return x.offsetParent !== null; });
     L = {
       list: list.map(function (x) { return x.hasAttribute('data-zoom-src') ? [x.getAttribute('data-zoom-src'), x.getAttribute('data-zoom-alt')] : [x.getAttribute('data-full') || x.getAttribute('src'), x.alt]; }),
