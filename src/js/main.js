@@ -119,7 +119,8 @@
         });
     }, { rootMargin: '0px 0px -8% 0px' });
     var ok = function (el) {
-      return !el.closest('header, button, .hdr, .cats') && el.closest('#intro, #work, #contact, main > div');
+      // The footer is excluded: it sits at the very bottom and could never scroll past the trigger line.
+      return !el.closest('header, button, .hdr, .cats, .foot') && el.closest('#intro, #work, #contact, main > div');
     };
     var list = [].slice.call(main.querySelectorAll(SEL));
     // plus leaf text spans that aren't inside a link (book meta, "6,000+ copies sold", Day/Night tags…)
@@ -138,6 +139,13 @@
       anims.set(el, a);
       io.observe(el);
     });
+    // At the bottom of the page nothing can scroll any higher: play whatever is still waiting on screen.
+    window.addEventListener('scroll', function () {
+      if (window.scrollY + window.innerHeight < document.documentElement.scrollHeight - 2) return;
+      anims.forEach(function (a, el) {
+        if (a.playState === 'paused' && el.getBoundingClientRect().top < window.innerHeight) { io.unobserve(el); a.play(); }
+      });
+    }, { passive: true });
   })();
 
   /* ---------- Category bar ----------

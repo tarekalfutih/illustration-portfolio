@@ -117,7 +117,7 @@ button { font: inherit; }
 .cg-cell { position: relative; overflow: hidden; min-width: 0; min-height: 0; background: #e8e6e4; }
 .cg-cell img { position: absolute; inset: 0; height: 100%; }
 
-.collage-rows { display: none; width: min(100%, calc((100svh - var(--hdr) - var(--extra, 360px) - 6px) / 1.024)); flex-direction: column; gap: 6px; }
+.collage-rows { display: none; width: 100%; flex-direction: column; gap: 6px; }
 .cr-row { display: flex; gap: 6px; }
 .cr-cell { flex: var(--ar) 1 0; min-width: 0; overflow: hidden; background: #e8e6e4; }
 .cr-cell img { height: auto; aspect-ratio: var(--ar); }
