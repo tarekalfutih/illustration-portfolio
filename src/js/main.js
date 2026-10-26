@@ -165,7 +165,11 @@
     spyCur = cur;
     CATS.forEach(function (k) { if (k === cur) chips[k].setAttribute('aria-current', 'true'); else chips[k].removeAttribute('aria-current'); });
     var b = cur && chips[cur];
-    if (b) { var sc = b.parentElement; sc.scrollTo({ left: b.offsetLeft - sc.offsetLeft - 20, behavior: reduced ? 'auto' : 'smooth' }); }
+    if (b) {
+      // .cats-row is the chips' offsetParent. Phone: centre the active chip; wider: bring it near the left.
+      var sc = b.parentElement, phone = root.getAttribute('data-bp') === '4';
+      sc.scrollTo({ left: phone ? b.offsetLeft - (sc.clientWidth - b.offsetWidth) / 2 : b.offsetLeft - 20, behavior: reduced ? 'auto' : 'smooth' });
+    }
   }
   window.addEventListener('scroll', spy, { passive: true });
   setTimeout(spy, 400);

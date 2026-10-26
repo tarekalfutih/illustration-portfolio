@@ -91,7 +91,7 @@
 
   function headline(c) {
     var h = el('span', 'hero-h', 'font-size:' + c.txt.h + 'px;line-height:' + c.txt.lh + ';letter-spacing:' + c.txt.ls);
-    h.innerHTML = 'I draw <span class="y">children\'s books.</span>';
+    h.innerHTML = 'I draw <span class="y">children\'s books</span>';
     return h;
   }
 
@@ -203,15 +203,24 @@
     }, 60);
   }
 
-  // Extra smoke puffs while the scroll button is hovered or focused.
+  // Extra smoke puffs while the scroll button is hovered or focused. The layer lives inside the
+  // zoomed stage and the origin comes from the inline px/% styles of the art and the pipe smoke,
+  // not getBoundingClientRect(): Safari reports zoomed boxes unzoomed, which put the puffs on the head.
   var hoverTimer = 0;
   function smokeLayer() {
-    if (reduced || !hero.animate) return null;
-    var hr = hero.getBoundingClientRect(), pr = els.smoke ? els.smoke.getBoundingClientRect() : null;
-    var layer = hero.querySelector('[data-smoke-layer]');
-    if (!layer) { layer = el('div'); layer.setAttribute('data-smoke-layer', ''); hero.appendChild(layer); }
-    layer.style.cssText = 'position:absolute;left:0;top:0;width:' + hr.width + 'px;height:' + hr.height + 'px;pointer-events:none;z-index:30;overflow:hidden';
-    return { layer: layer, W: hr.width, H: hr.height, ox: pr ? pr.left + pr.width / 2 - hr.left : hr.width * .35, oy: pr ? pr.bottom - pr.height * .1 - hr.top : hr.height * .4 };
+    if (reduced || !hero.animate || !els.art) return null;
+    var stage = els.art, pipe = els.smoke, art = els.pic;
+    var n = function (v) { return parseFloat(v) || 0; }, W = n(stage.style.width), H = n(stage.style.height);
+    var layer = stage.querySelector(':scope > [data-smoke-layer]');
+    if (!layer) { layer = el('div'); layer.setAttribute('data-smoke-layer', ''); stage.appendChild(layer); }
+    layer.style.cssText = 'position:absolute;left:0;top:0;width:' + W + 'px;height:' + H + 'px;pointer-events:none;z-index:30;overflow:hidden';
+    var ox = W * .35, oy = H * .4;
+    if (pipe && art) {
+      var aw = n(art.style.width), ah = n(art.style.height), ps = pipe.style;
+      ox = n(art.style.left) + (n(ps.left) + n(ps.width) / 2) / 100 * aw;
+      oy = n(art.style.top) + (n(ps.top) + n(ps.height) * .9) / 100 * ah;
+    }
+    return { layer: layer, W: W, H: H, ox: ox, oy: oy };
   }
   function puff(L, o) {
     var s = o.size * (.6 + Math.random() * .9);
