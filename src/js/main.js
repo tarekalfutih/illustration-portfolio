@@ -26,6 +26,8 @@
       var need = cv.bottom + y + 24 - window.innerHeight, cap = rect('#picture-books').top + y - stickyH();
       top = Math.max(top, Math.min(need, cap));
     }
+    // Never past the "Selected work" title: it always stays fully visible, 16px under the header.
+    top = Math.min(top, rect('#work-h').top + y - hdrH() - 16);
     return Math.max(0, top);
   }
   function scrollToId(id, extra) {
