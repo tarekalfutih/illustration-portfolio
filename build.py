@@ -10,6 +10,7 @@ and adds WebP versions of every <img> in index.html as a srcset (640/1280/1920 p
 larger than the original). The original file stays as `src`, so the lightbox still opens it at
 full size. WebP files are cached in .cache/ and only regenerated when the source changes.
 """
+import hashlib
 import http.server
 import os
 import re
@@ -68,6 +69,16 @@ def add_srcset(html):
     return re.sub(r'<img\b[^>]*>', repl, html)
 
 
+def bust(html):
+    """Add ?v=<content hash> to the CSS/JS links so browsers (notably iOS Safari) fetch new files after a deploy."""
+    def repl(m):
+        path = os.path.join(DIST, m.group(2))
+        with open(path, 'rb') as f:
+            v = hashlib.md5(f.read()).hexdigest()[:8]
+        return '%s="%s?v=%s"' % (m.group(1), m.group(2), v)
+    return re.sub(r'(href|src)="((?:css|js)/[^"?]+\.(?:css|js))"', repl, html)
+
+
 def build():
     if os.path.exists(DIST):
         shutil.rmtree(DIST)
@@ -76,7 +87,7 @@ def build():
     with open(path, encoding='utf-8') as f:
         html = f.read()
     with open(path, 'w', encoding='utf-8') as f:
-        f.write(add_srcset(html))
+        f.write(bust(add_srcset(html)))
     with open(os.path.join(DIST, 'CNAME'), 'w') as f:
         f.write(DOMAIN + '\n')
     open(os.path.join(DIST, '.nojekyll'), 'w').close()   # serve files as-is, no Jekyll processing
