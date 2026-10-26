@@ -196,9 +196,12 @@
     hintIo.observe(cmpIn);
   }
 
-  /* ---------- Image protection ---------- */
+  /* ---------- Image protection ----------
+     No right-click / long-press menu ("Save image as…") and no dragging on any artwork: <img>, the
+     canvas animations, and the areas that show artwork as backgrounds or under overlays. */
+  var ART = 'img, canvas, .hero, .book, .compare, .anim, .collage, .covers, .cards, .more, .lb';
   ['contextmenu', 'dragstart'].forEach(function (t) {
-    document.addEventListener(t, function (e) { if (e.target && e.target.tagName === 'IMG') e.preventDefault(); });
+    document.addEventListener(t, function (e) { if (e.target.closest && e.target.closest(ART)) e.preventDefault(); });
   });
 
   /* ---------- Lightbox ----------

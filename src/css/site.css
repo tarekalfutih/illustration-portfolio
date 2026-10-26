@@ -16,7 +16,7 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: Archivo
 main { width: 100%; overflow-x: clip; }
 a { color: var(--ink); }
 a:hover { color: var(--accent); }
-img { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
+img, canvas, .hero, .book, .compare, .anim { -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
 button { font: inherit; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 

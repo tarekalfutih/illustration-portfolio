@@ -3,6 +3,7 @@
 
     python3 build.py            # build into dist/
     python3 build.py --serve    # build, then serve dist/ on http://localhost:8000
+    python3 build.py --deploy   # build, then publish dist/ to the gh-pages branch (GitHub Pages)
 
 src/ is the site and works as-is (open it with any static server). The build copies it to dist/
 and adds WebP versions of every <img> in index.html as a srcset (640/1280/1920 px wide, never
@@ -13,7 +14,9 @@ import http.server
 import os
 import re
 import shutil
+import subprocess
 import sys
+import tempfile
 
 from PIL import Image
 
@@ -22,6 +25,7 @@ SRC = os.path.join(ROOT, 'src')
 DIST = os.path.join(ROOT, 'dist')
 CACHE = os.path.join(ROOT, '.cache', 'webp')
 WIDTHS = (640, 1280, 1920)
+DOMAIN = 'tarekalfutih.se'   # custom domain; written to dist/CNAME so GitHub Pages keeps it
 
 
 def webp_variants(rel):
@@ -67,17 +71,38 @@ def add_srcset(html):
 def build():
     if os.path.exists(DIST):
         shutil.rmtree(DIST)
-    shutil.copytree(SRC, DIST)
+    shutil.copytree(SRC, DIST, ignore=shutil.ignore_patterns('.DS_Store'))
     path = os.path.join(DIST, 'index.html')
     with open(path, encoding='utf-8') as f:
         html = f.read()
     with open(path, 'w', encoding='utf-8') as f:
         f.write(add_srcset(html))
+    with open(os.path.join(DIST, 'CNAME'), 'w') as f:
+        f.write(DOMAIN + '\n')
+    open(os.path.join(DIST, '.nojekyll'), 'w').close()   # serve files as-is, no Jekyll processing
     print('Built dist/ (%d WebP files)' % len(os.listdir(os.path.join(DIST, 'images', 'w'))))
+
+
+def deploy():
+    """Publish dist/ as the only commit on the gh-pages branch of this repo's origin."""
+    git = lambda *a, **k: subprocess.run(['git'] + list(a), check=True, **k)
+    origin = subprocess.run(['git', 'remote', 'get-url', 'origin'], cwd=ROOT, check=True,
+                            capture_output=True, text=True).stdout.strip()
+    rev = subprocess.run(['git', 'rev-parse', '--short', 'HEAD'], cwd=ROOT, check=True,
+                         capture_output=True, text=True).stdout.strip()
+    with tempfile.TemporaryDirectory() as tmp:
+        shutil.copytree(DIST, tmp, dirs_exist_ok=True)
+        git('init', '-q', '-b', 'gh-pages', cwd=tmp)
+        git('add', '-A', cwd=tmp)
+        git('commit', '-q', '-m', 'Deploy %s' % rev, cwd=tmp)
+        git('push', '-q', '--force', origin, 'gh-pages', cwd=tmp)
+    print('Deployed %s to gh-pages' % rev)
 
 
 if __name__ == '__main__':
     build()
+    if '--deploy' in sys.argv:
+        deploy()
     if '--serve' in sys.argv:
         os.chdir(DIST)
         port = int(os.environ.get('PORT', 8000))

@@ -1,7 +1,0 @@
-# Netlify: builds dist/ with build.py (Pillow from requirements.txt) and publishes it.
-[build]
-  command = "python3 build.py"
-  publish = "dist"
-
-[build.environment]
-  PYTHON_VERSION = "3.12"

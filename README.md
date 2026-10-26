@@ -21,8 +21,16 @@ python3 build.py
 
 ## Deploy
 
-Hosted on Netlify, connected to this GitHub repo. `netlify.toml` runs `python3 build.py`
-(Pillow from `requirements.txt`) and publishes `dist/`. Every push to `main` redeploys.
+Hosted on GitHub Pages at https://tarekalfutih.se, served from the `gh-pages` branch.
+After committing and pushing `main`, publish with:
+
+```bash
+python3 build.py --deploy
+```
+
+It builds `dist/` (with `CNAME` for the domain) and force-pushes it as the only commit on `gh-pages`.
+DNS for tarekalfutih.se is at Loopia: four A records on `@` (185.199.108.153–111.153) and
+`www` as a CNAME to `tarekalfutih.github.io`.
 
 ## Files
 
