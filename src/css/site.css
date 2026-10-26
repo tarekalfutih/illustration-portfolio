@@ -147,7 +147,7 @@ button { font: inherit; }
 .cats-row button:hover, .cats-row button[aria-current="true"] { color: var(--accent); border-bottom-color: var(--accent); }
 .cats-row button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.work-body { padding: clamp(40px, 6vh, 72px) var(--padx) clamp(56px, 10vh, 120px); display: flex; flex-direction: column; gap: clamp(64px, 9vw, 120px); }
+.work-body { padding: clamp(40px, 6vh, 72px) var(--padx) clamp(8px, 1.5vh, 24px); display: flex; flex-direction: column; gap: clamp(64px, 9vw, 120px); }
 .cat { display: flex; flex-direction: column; gap: clamp(24px, 3vw, 40px); }
 .h-sub { margin: 0; font: 800 clamp(30px, 3.6vw, 52px)/1 Archivo; letter-spacing: -.02em; padding-bottom: 14px; border-bottom: 2px solid var(--ink); }
 .eyebrow { font: 700 12px/1 Archivo; letter-spacing: .14em; text-transform: uppercase; padding-bottom: 12px; border-bottom: 2px solid rgba(255, 255, 255, .6); }
@@ -220,11 +220,14 @@ button { font: inherit; }
 .card-head h3 { margin: 0; font: 800 clamp(22px, 2vw, 30px)/1.1 Archivo; }
 .card-head span { font: 400 15px/1.4 Archivo; }
 .cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: clamp(8px, 1vw, 14px); width: min(100%, calc((100svh - 300px) * 3)); }
+/* Tablet and phone: the two mockups stack in one column. */
+[data-bp="2"] .cards { grid-template-columns: minmax(0, 1fr); width: min(100%, calc((100svh - 200px) * 1.5)); margin: 0 auto; }
+[data-bp="3"] .cards, [data-bp="4"] .cards { grid-template-columns: minmax(0, 1fr); width: 100%; }
 .cards img { display: block; width: 100%; height: auto; aspect-ratio: 1600/1067; object-fit: cover; }
 
 /* More illustrations */
 .more { display: flex; flex-direction: column; gap: clamp(10px, 1.2vw, 16px); }
-.more-row { display: flex; flex-wrap: wrap; gap: clamp(10px, 1.2vw, 16px); width: 100%; }
+.more-row { display: flex; flex-wrap: nowrap; gap: clamp(10px, 1.2vw, 16px); width: 100%; }
 .more-row img { display: block; flex: var(--ar) 1 calc(var(--ar) * 150px); min-width: 0; height: auto; background: #e8e6e4; }
 
 /* ---------- Contact ---------- */
