@@ -18,7 +18,11 @@ python3 build.py
 ```
 
 `python3 build.py --serve` builds and serves `dist/` on http://localhost:8000.
-Deploy `dist/` to any static host (GitHub Pages, Netlify, Vercel).
+
+## Deploy
+
+Hosted on Netlify, connected to this GitHub repo. `netlify.toml` runs `python3 build.py`
+(Pillow from `requirements.txt`) and publishes `dist/`. Every push to `main` redeploys.
 
 ## Files
 
