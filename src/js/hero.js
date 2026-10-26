@@ -33,7 +33,7 @@
     Object.assign({ FW: 390, FH: 844, HH: 60, img: 'pirate-portrait.jpg', artL: -20, artW: 560, artH: 778, strip: 0, clip: true,
       txt: { left: 24, right: 24, top: 430, gap: 14, h: 42, lh: 1.02, ls: '-.01em', t: 17, tmin: 22 } }, EYES_PORTRAIT)
   ];
-  var PHRASES = ['game backgrounds.', 'educational materials.'];
+  var PHRASES = ['game backgrounds', 'educational materials'];
 
   var hero = document.querySelector('[data-hero]');
   var state = { bp: -1, vw: 0, vh: 0 };

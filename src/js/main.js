@@ -164,7 +164,29 @@
 
   /* ---------- Day / night compare ---------- */
   var cmp = document.querySelector('[data-compare]');
-  cmp.querySelector('input').addEventListener('input', function (e) { cmp.style.setProperty('--split', e.target.value + '%'); });
+  var cmpIn = cmp.querySelector('input'), hintDone = false, hintRaf = 0;
+  function stopHint() { hintDone = true; cancelAnimationFrame(hintRaf); }
+  cmpIn.addEventListener('input', function (e) { stopHint(); cmp.style.setProperty('--split', e.target.value + '%'); });
+  cmpIn.addEventListener('pointerdown', stopHint);
+  cmpIn.addEventListener('focus', stopHint);
+  // First time the slider is 60% in view: one slow ±8% swing around the centre, then rest at 50%.
+  if (!reduced) {
+    var hintIo = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting || hintDone) return;
+      hintIo.disconnect();
+      var T = 2000, t0 = performance.now() + 400;
+      var tick = function (now) {
+        if (hintDone) return;
+        var t = Math.max(0, now - t0) / T;
+        if (t >= 1) { hintDone = true; cmp.style.setProperty('--split', '50%'); return; }
+        var env = Math.sin(Math.PI * Math.min(1, t * 1.15));
+        cmp.style.setProperty('--split', (50 + 8 * env * Math.sin(t * Math.PI * 2)) + '%');
+        hintRaf = requestAnimationFrame(tick);
+      };
+      hintRaf = requestAnimationFrame(tick);
+    }, { threshold: .6 });
+    hintIo.observe(cmpIn);
+  }
 
   /* ---------- Image protection ---------- */
   ['contextmenu', 'dragstart'].forEach(function (t) {
