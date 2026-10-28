@@ -1,0 +1,19 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "illustration",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "--directory", "src", "8070"],
+      "port": 8070,
+      "autoPort": true
+    },
+    {
+      "name": "illustration-dist",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["build.py", "--serve"],
+      "port": 8000,
+      "autoPort": true
+    }
+  ]
+}
