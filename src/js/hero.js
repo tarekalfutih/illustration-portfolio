@@ -138,9 +138,13 @@
     if (vw === state.vw && vh === state.vh) return;
     state.vw = vw; state.vh = vh;
     var bp = pickBp(vw, vh), c = BP[bp];
-    var zW = vw / c.FW, zh = bp >= 3 ? zW : Math.max(.3, (vh - c.HH * zW - 88) / (c.FH - c.HH));
+    // Header scale follows the width, but on screens wider than 16:9 (ultrawide) it follows the
+    // height instead, so the header doesn't grow out of proportion; the bar then stretches to fill.
+    var zW = vw / c.FW, zH = Math.min(zW, Math.max(1, vh / (c.FW * .5625)));
+    var zh = bp >= 3 ? zW : Math.max(.3, (vh - c.HH * zH - 88) / (c.FH - c.HH));
     root.setAttribute('data-bp', bp);
-    root.style.setProperty('--z', zW);
+    root.style.setProperty('--z', zH);
+    root.style.setProperty('--hdrw', vw / zH + 'px');
     root.style.setProperty('--zh', zh);
     if (bp !== state.bp) { state.bp = bp; build(bp); }
     // Wider crops shift the headline left so it stays on screen.

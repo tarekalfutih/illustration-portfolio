@@ -15,9 +15,11 @@
   var vw = document.documentElement.clientWidth, vh = window.innerHeight, land = vw > vh;
   var bp = vw >= 1680 ? 0 : vw >= 1300 ? 1 : (vw >= 1000 || (land && vw >= 600)) ? 2 : vw >= 600 ? 3 : land ? 2 : 4;
   var r = document.documentElement;
+  var fw = [1920, 1440, 1180, 820, 390][bp], z = Math.min(vw / fw, Math.max(1, vh / (fw * .5625)));
   r.setAttribute('data-bp', bp);
-  r.style.setProperty('--z', vw / [1920, 1440, 1180, 820, 390][bp]);
-  r.style.setProperty('--hdr', Math.round([80, 80, 72, 72, 60][bp] * vw / [1920, 1440, 1180, 820, 390][bp]) + 'px');
+  r.style.setProperty('--z', z);
+  r.style.setProperty('--hdrw', vw / z + 'px');
+  r.style.setProperty('--hdr', Math.round([80, 80, 72, 72, 60][bp] * z) + 'px');
 })();
 </script>
 <link rel="stylesheet" href="css/site.css">
@@ -267,16 +269,16 @@
     <section id="more" class="cat" aria-labelledby="more-h">
       <h2 id="more-h" class="h-sub">More illustrations</h2>
       <div class="more more-wide">
-        <div class="more-row">
+        <div class="more-row" style="--sum:2.174;--gaps:1">
           <img data-zoom src="images/br-wheat.jpg" alt="Blue rabbit in the wheat field" loading="lazy" style="--ar:1.087;aspect-ratio:1800/1656" sizes="(max-width:600px) 100vw, 50vw">
           <img data-zoom src="images/br-palm.jpg" alt="Blue rabbit running from the wolf" loading="lazy" style="--ar:1.087;aspect-ratio:1800/1656" sizes="(max-width:600px) 100vw, 50vw">
         </div>
-        <div class="more-row">
+        <div class="more-row" style="--sum:2.428;--gaps:2">
           <img data-zoom src="images/ani-stork.jpg" alt="Stork flying over the river" loading="lazy" style="--ar:.714;aspect-ratio:1286/1800" sizes="(max-width:600px) 50vw, 33vw">
           <img data-zoom src="images/ani-boy-forest.jpg" alt="A boy with a backpack walking through the forest" loading="lazy" style="--ar:1;aspect-ratio:1600/1600" sizes="(max-width:600px) 50vw, 33vw">
           <img data-zoom src="images/ani-ducks.jpg" alt="Two ducks and a turtle" loading="lazy" style="--ar:.714;aspect-ratio:1286/1800" sizes="(max-width:600px) 50vw, 33vw">
         </div>
-        <div class="more-row">
+        <div class="more-row" style="--sum:2.801;--gaps:2">
           <img data-zoom src="images/ani-flamingo.jpg" alt="Flamingo in the lake" loading="lazy" style="--ar:.714;aspect-ratio:1286/1800" sizes="(max-width:600px) 50vw, 25vw">
           <img data-zoom src="images/br-tree.jpg" alt="Blue rabbit meets the wolf under the tree" loading="lazy" style="--ar:1.087;aspect-ratio:1800/1656" sizes="(max-width:600px) 100vw, 40vw">
           <img data-zoom src="images/sw-crocodile.jpg" alt="Pink crocodile resting under the moon" loading="lazy" style="--ar:1;aspect-ratio:1;background:#1b2550" sizes="(max-width:600px) 100vw, 35vw">
