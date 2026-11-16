@@ -9,6 +9,7 @@
   --accent-dk: #b84f2a;
   --padx: clamp(20px, 4vw, 72px);
   --hdr: 80px;
+  --vh: 1vh;
   /* Big screens. Content width stops growing past 16:9 (ultrawide gets centred content); on screens up
      to 16:9 - including 4K - nothing changes. --u is "1vw" capped the same way, for vw-scaled sizes. */
   --pagew: max(1920px, 177.78vh);
@@ -17,11 +18,14 @@
   --cgutter: max(clamp(20px, 4vw, 56px), calc((100vw - var(--pagew)) / 2 + clamp(20px, 4vw, 56px)));
   /* Height you can see below the sticky header and category bar: artwork is never taller than this,
      so a piece never has to be scrolled to be seen whole (short TV/zoomed windows, ultrawide). */
-  --avail: calc(100svh - var(--hdr) - 96px);
+  --avail: calc((100 * var(--vh)) - var(--hdr) - 96px);
 }
+/* Older browsers (some TVs) don't know svh, aspect-ratio, inset or overflow:clip; each has a fallback here. */
+@supports (height: 1svh) { :root { --vh: 1svh; } }
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: Archivo, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+body { overflow-x: hidden; }
 main { width: 100%; overflow-x: clip; }
 a { color: var(--ink); }
 a:hover { color: var(--accent); }
@@ -38,7 +42,7 @@ button { font: inherit; }
 .hdr { position: sticky; top: 0; z-index: 50; }
 /* width = viewport / zoom, so the bar always spans the screen even when the zoom is capped (ultrawide) */
 .hdr-art { position: relative; width: var(--hdrw, 1920px); height: 80px; zoom: var(--z, 1); }
-.hdr-bar { position: absolute; inset: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 0 48px; background: var(--bg); border-bottom: 2px solid var(--ink); }
+.hdr-bar { position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 0 48px; background: var(--bg); border-bottom: 2px solid var(--ink); }
 .hdr-logo { font: 800 24px/1 Archivo; letter-spacing: -.015em; color: var(--ink); text-decoration: none; white-space: nowrap; }
 .hdr-nav { display: flex; align-items: center; gap: 36px; }
 .hdr-nav a { font: 600 16px/1 Archivo; letter-spacing: .01em; color: var(--ink); text-decoration: none; padding: 6px 0; border-bottom: 2px solid transparent; }
@@ -72,8 +76,8 @@ button { font: inherit; }
 .hdr-menu a { font: 700 22px/1 Archivo; color: var(--ink); text-decoration: none; padding: 18px 20px; border-bottom: 2px solid var(--ink); }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; height: calc(100svh - var(--hdr) - 88px); min-height: 360px; overflow: hidden; background: #37200f; display: flex; flex-direction: column; justify-content: flex-end; }
-[data-bp="3"] .hero, [data-bp="4"] .hero { height: calc(100svh - var(--hdr) - 72px); justify-content: flex-start; }
+.hero { position: relative; height: calc((100 * var(--vh)) - var(--hdr) - 88px); min-height: 360px; overflow: hidden; background: #37200f; display: flex; flex-direction: column; justify-content: flex-end; }
+[data-bp="3"] .hero, [data-bp="4"] .hero { height: calc((100 * var(--vh)) - var(--hdr) - 72px); justify-content: flex-start; }
 .hero-art { flex: none; position: relative; zoom: var(--zh, 1); }
 .hero-pic, .hero-strip { position: absolute; background-repeat: no-repeat; }
 .hero-strip.flip { transform: scaleX(-1); }
@@ -117,11 +121,11 @@ button { font: inherit; }
 .collage .cg-portrait img { object-position: 50% 25%; filter: grayscale(1); }
 .collage .cg-portrait img:hover { transform: none; }
 
-.collage-wide { width: min(100%, max(calc((100svh - var(--hdr) - var(--extra, 280px)) * 2.75), 50%)); aspect-ratio: 2.75; display: grid; grid-template-columns: 2fr 1.5fr 2fr; gap: 8px; }
+.collage-wide { width: min(100%, max(calc(((100 * var(--vh)) - var(--hdr) - var(--extra, 280px)) * 2.75), 50%)); aspect-ratio: 2.75; display: grid; grid-template-columns: 2fr 1.5fr 2fr; gap: 8px; }
 .cg-col { display: grid; grid-template-rows: 1fr 1fr; gap: 8px; min-height: 0; }
 .cg-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; min-height: 0; }
 .cg-cell { position: relative; overflow: hidden; min-width: 0; min-height: 0; background: #e8e6e4; }
-.cg-cell img { position: absolute; inset: 0; height: 100%; }
+.cg-cell img { position: absolute; top: 0; right: 0; bottom: 0; left: 0; height: 100%; }
 
 .collage-tp, .collage-ph { display: none; flex-direction: column; gap: 6px; }
 .collage-tp { width: min(100%, 460px); }
@@ -133,7 +137,7 @@ button { font: inherit; }
 .cg2-cell { min-width: 0; overflow: hidden; background: #e8e6e4; }
 .cg2-cell img { height: auto; }
 .cg2-fill { position: relative; }
-.cg2-fill img { position: absolute; inset: 0; height: 100%; }
+.cg2-fill img { position: absolute; top: 0; right: 0; bottom: 0; left: 0; height: 100%; }
 [data-bp="3"] .collage-wide, [data-bp="4"] .collage-wide { display: none; }
 [data-bp="3"] .collage-tp, [data-bp="4"] .collage-ph { display: flex; }
 
@@ -179,9 +183,9 @@ button { font: inherit; }
 /* Above 1440px the blocks scale with the screen (max(old, 1440px-laptop vw)), so desktop = laptop, bigger. */
 .book { position: relative; overflow: hidden; padding: max(clamp(32px, calc(6 * var(--u)), 88px), calc(6 * var(--u))) max(clamp(20px, calc(5 * var(--u)), 80px), calc(5 * var(--u))); }
 .book-sk { background: #0f1a3a url(../images/book-bg-night.jpg) center 70%/cover no-repeat; }
-.book-sk-bg { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 14, 38, .15) 0%, rgba(8, 14, 38, .55) 55%, rgba(8, 14, 38, .75) 100%); }
+.book-sk-bg { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: linear-gradient(90deg, rgba(8, 14, 38, .15) 0%, rgba(8, 14, 38, .55) 55%, rgba(8, 14, 38, .75) 100%); }
 .book-isl { background: #2a1640 url(../images/islams-bg-balloons.jpg) center/cover no-repeat; display: flex; flex-direction: column; gap: clamp(40px, calc(6 * var(--u)), 72px); }
-.book-isl-bg { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(42, 18, 66, .35) 0%, rgba(42, 18, 66, .72) 55%, rgba(30, 12, 48, .86) 100%), linear-gradient(180deg, rgba(30, 12, 48, .2) 0%, rgba(30, 12, 48, .85) 60%, rgba(24, 10, 40, .95) 100%); }
+.book-isl-bg { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: linear-gradient(90deg, rgba(42, 18, 66, .35) 0%, rgba(42, 18, 66, .72) 55%, rgba(30, 12, 48, .86) 100%), linear-gradient(180deg, rgba(30, 12, 48, .2) 0%, rgba(30, 12, 48, .85) 60%, rgba(24, 10, 40, .95) 100%); }
 .book-top { position: relative; display: flex; flex-wrap: wrap; gap: max(clamp(28px, calc(5 * var(--u)), 72px), calc(5 * var(--u))); align-items: center; }
 .book-cover { display: block; flex: 0 1 max(clamp(220px, calc(28 * var(--u)), 380px), calc(26.39 * var(--u))); width: max(clamp(220px, calc(28 * var(--u)), 380px), calc(26.39 * var(--u))); max-width: min(100%, var(--avail)); aspect-ratio: 1; object-fit: cover; box-shadow: 0 24px 48px rgba(0, 0, 0, .5); transform: rotate(var(--rot)); }
 .book-info { flex: 1 1 320px; display: flex; flex-direction: column; gap: max(16px, calc(1.111 * var(--u))); max-width: max(540px, calc(37.5 * var(--u))); min-width: 0; color: #fff; }
@@ -200,7 +204,7 @@ button { font: inherit; }
 .btn-line:hover { background: #f2c14e; color: var(--ink); }
 /* Phone: blocks bleed to the screen edges; flat cover as wide as the other work images (shorter on short phones). */
 [data-bp="4"] .book { margin: 0 calc(-1 * clamp(20px, 4vw, 72px)); }
-[data-bp="4"] .book-cover { flex: 0 0 auto; width: min(100%, calc(100svh - 447px)); max-width: none; margin: 0; box-shadow: 0 10px 24px rgba(0, 0, 0, .35); transform: none; }
+[data-bp="4"] .book-cover { flex: 0 0 auto; width: min(100%, calc((100 * var(--vh)) - 447px)); max-width: none; margin: 0; box-shadow: 0 10px 24px rgba(0, 0, 0, .35); transform: none; }
 [data-bp="4"] .not-phone { display: none; }
 .book-pages { position: relative; display: flex; flex-direction: column; gap: 20px; }
 .book-sk .book-pages { margin-top: clamp(40px, calc(6 * var(--u)), 72px); }
@@ -211,26 +215,26 @@ button { font: inherit; }
 
 /* Covers */
 .covers { display: flex; flex-wrap: wrap; gap: clamp(24px, 3vw, 48px); align-items: flex-start; }
-.cover-magi { flex: 825 1 calc(.825 * 220px); min-width: 0; max-width: calc((100svh - 270px) * 1139 / 1381); aspect-ratio: 1139/1381; overflow: hidden; box-shadow: 0 18px 40px rgba(0, 0, 0, .22); }
+.cover-magi { flex: 825 1 calc(.825 * 220px); min-width: 0; max-width: calc(((100 * var(--vh)) - 270px) * 1139 / 1381); aspect-ratio: 1139/1381; overflow: hidden; box-shadow: 0 18px 40px rgba(0, 0, 0, .22); }
 .cover-magi .anim { aspect-ratio: 1139/1381; background: #2a1d5c; }
-.cover-jag { display: block; flex: 707 1 calc(.707 * 220px); min-width: 0; max-width: calc((100svh - 270px) * 1273 / 1800); height: auto; aspect-ratio: 1273/1800; background: #20343a; box-shadow: 0 18px 40px rgba(0, 0, 0, .22); }
+.cover-jag { display: block; flex: 707 1 calc(.707 * 220px); min-width: 0; max-width: calc(((100 * var(--vh)) - 270px) * 1273 / 1800); height: auto; aspect-ratio: 1273/1800; background: #20343a; box-shadow: 0 18px 40px rgba(0, 0, 0, .22); }
 /* Phone: the two covers always stack, whatever the phone width. */
 [data-bp="4"] .covers > * { flex-basis: 100%; }
 
 /* Animated pieces: base image + canvas overlay */
 .anim { position: relative; width: 100%; user-select: none; -webkit-user-select: none; }
 .anim img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.anim canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.anim canvas { position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
 .anim-fig { margin: 0; }
-.anim-row { display: flex; flex-wrap: wrap; gap: clamp(16px, 2vw, 32px); align-items: flex-end; width: min(100%, calc((100svh - 310px) * 3.062)); }
+.anim-row { display: flex; flex-wrap: wrap; gap: clamp(16px, 2vw, 32px); align-items: flex-end; width: min(100%, calc(((100 * var(--vh)) - 310px) * 3.062)); }
 .anim-friends { flex: 2 1 420px; min-width: 0; max-width: calc(var(--avail) * 2); }
 .anim-friends .anim { aspect-ratio: 2/1; background: #6f6f9a; }
 .anim-happy { flex: 1.062 1 223px; min-width: 0; max-width: calc(var(--avail) * 1293 / 1217); }
 .anim-happy .anim { aspect-ratio: 1293/1217; overflow: hidden; }
 
 /* Game backgrounds: day/night compare */
-.compare { position: relative; margin: 0; width: min(100%, calc((100svh - 310px) * 2)); aspect-ratio: 2/1; overflow: hidden; background: #1b2550; user-select: none; }
-.compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.compare { position: relative; margin: 0; width: min(100%, calc(((100 * var(--vh)) - 310px) * 2)); aspect-ratio: 2/1; overflow: hidden; background: #1b2550; user-select: none; }
+.compare img { position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
 [data-bp="4"] .compare { width: calc(100% + 2 * clamp(20px, 4vw, 72px)); margin: 0 calc(-1 * clamp(20px, 4vw, 72px)); }
 .compare-night { clip-path: inset(0 0 0 var(--split)); }
 .compare-line { position: absolute; top: 0; bottom: 0; left: var(--split); width: 2px; margin-left: -1px; background: #fff; pointer-events: none; }
@@ -242,16 +246,16 @@ button { font: inherit; }
 /* margin-top: the reference's design-system figcaption default (4px) */
 .compare-cap { margin: 4px 0 0; display: flex; align-items: center; gap: 8px; font: 600 14px/1.3 Archivo; color: var(--ink); }
 .compare-cap svg { display: block; flex: none; }
-.compare input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+.compare input { position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
 .compare:has(input:focus-visible) .compare-line div { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Cards */
 .card-head { display: flex; flex-direction: column; gap: 6px; }
 .card-head h3 { margin: 0; font: 800 clamp(22px, 2vw, 30px)/1.1 Archivo; }
 .card-head span { font: 400 15px/1.4 Archivo; }
-.cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: clamp(8px, 1vw, 14px); width: min(100%, calc((100svh - 300px) * 3)); }
+.cards { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; gap: clamp(8px, 1vw, 14px); width: min(100%, calc(((100 * var(--vh)) - 300px) * 3)); }
 /* Tablet and phone: the two mockups stack in one column. */
-[data-bp="2"] .cards { grid-template-columns: minmax(0, 1fr); width: min(100%, calc((100svh - 200px) * 1.5)); margin: 0 auto; }
+[data-bp="2"] .cards { grid-template-columns: minmax(0, 1fr); width: min(100%, calc(((100 * var(--vh)) - 200px) * 1.5)); margin: 0 auto; }
 [data-bp="3"] .cards, [data-bp="4"] .cards { grid-template-columns: minmax(0, 1fr); width: 100%; }
 .cards img { display: block; width: 100%; height: auto; aspect-ratio: 1600/1067; object-fit: cover; }
 
@@ -282,7 +286,7 @@ button { font: inherit; }
 .foot span { font: 400 14px/1.5 Archivo; max-width: 720px; }
 
 /* ---------- Lightbox ---------- */
-.lb { position: fixed; inset: 0; z-index: 300; background: rgba(20, 18, 17, .96); color: #fff; }
+.lb { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 300; background: rgba(20, 18, 17, .96); color: #fff; }
 .lb[hidden] { display: none; }
 .lb-sc { position: absolute; top: 64px; bottom: 64px; left: var(--lbpx, 80px); right: var(--lbpx, 80px); overflow: auto; display: flex; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #fff transparent; }
 .lb-sc img { display: block; margin: auto; flex: none; height: auto; max-width: 100%; max-height: 100%; cursor: zoom-in; user-select: none; }
@@ -309,4 +313,16 @@ button { font: inherit; }
   .bob, .rainbow { animation: none; }
   .hero-smoke { display: none; }
   .collage img { transition: none; }
+}
+
+/* ---------- Older browsers without aspect-ratio ----------
+   The intro grid and the day/night slider get their height only from aspect-ratio; here the same
+   width formula is written with vw (content width = 100vw - 2 gutters) and the height derived from it. */
+@supports not (aspect-ratio: 1 / 1) {
+  .collage-wide {
+    --cw: min(calc(100vw - 2 * var(--gutter)), max(calc(((100 * var(--vh)) - var(--hdr) - var(--extra, 280px)) * 2.75), calc((100vw - 2 * var(--gutter)) / 2)));
+    width: var(--cw); height: calc(var(--cw) / 2.75);
+  }
+  .compare { --cw: min(calc(100vw - 2 * var(--gutter)), calc(((100 * var(--vh)) - 310px) * 2)); width: var(--cw); height: calc(var(--cw) / 2); }
+  [data-bp="4"] .compare { --cw: 100vw; }
 }
