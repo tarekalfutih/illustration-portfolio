@@ -87,7 +87,7 @@ button { font: inherit; }
 .hdr-menu a { font: 700 22px/1 Archivo; color: var(--ink); text-decoration: none; padding: 18px 20px; border-bottom: 2px solid var(--ink); }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; height: calc((100 * var(--vh)) - var(--hdr) - 88px * var(--s)); min-height: 360px; overflow: hidden; background: #37200f; display: flex; flex-direction: column; justify-content: flex-end; }
+.hero { position: relative; max-width: var(--pagew); margin: 0 auto; height: calc((100 * var(--vh)) - var(--hdr) - 88px * var(--s)); min-height: 360px; overflow: hidden; background: #37200f; display: flex; flex-direction: column; justify-content: flex-end; }
 [data-bp="3"] .hero, [data-bp="4"] .hero { height: calc((100 * var(--vh)) - var(--hdr) - 72px); justify-content: flex-start; }
 .hero-art { flex: none; position: relative; zoom: var(--zh, 1); }
 .hero-pic, .hero-strip { position: absolute; background-repeat: no-repeat; }

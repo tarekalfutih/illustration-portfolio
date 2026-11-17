@@ -150,7 +150,9 @@
     root.style.setProperty('--zh', zh);
     if (bp !== state.bp) { state.bp = bp; build(bp); }
     // Wider crops shift the headline left so it stays on screen.
-    if (bp < 3) els.txt.style.right = (c.baseR + Math.max(0, c.FW - vw / zh)) + 'px';
+    // The hero is at most 16:9 wide (CSS --pagew), centred like the rest of the page on ultrawide screens.
+    var hw = Math.min(vw, Math.max(1920, vh * 1.7778));
+    if (bp < 3) els.txt.style.right = (c.baseR + Math.max(0, c.FW - hw / zh)) + 'px';
     var hd = document.querySelector('.hdr');
     if (hd) root.style.setProperty('--hdr', Math.round(hd.getBoundingClientRect().height) + 'px');
     document.dispatchEvent(new CustomEvent('layout'));
