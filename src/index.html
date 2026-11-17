@@ -36,14 +36,21 @@
       local: t.children[0].firstChild.firstChild.getBoundingClientRect().width < 150 };
     r.removeChild(t);
   }
-  window.__scale = function (vw, vh, bp) {
+  window.__scale = function (vw, vh, bp, z) {
     var s = bp === 0 && k.zoom ? Math.max(1, Math.min(vw / 1920, vh / 1080)) : 1;
     r.style.setProperty('--s', s);
     r.style.setProperty('--sv', k.vwMul ? s : 1);
     if (k.local) r.setAttribute('data-zl', ''); else r.removeAttribute('data-zl');
+    /* Logo and nav line up with the content edges (the CSS --gutter, in screen px, divided by the
+       header zoom). Desktop, laptop and tablet landscape only; the other layouts already line up. */
+    if (bp < 3) {
+      var w = vw / s, h = vh / s, padx = Math.min(72, Math.max(20, w * .04));
+      var g = Math.max(padx, (w - Math.max(1920, h * 1.7778)) / 2 + padx) * s;
+      r.style.setProperty('--hdrpad', g / z + 'px');
+    } else r.style.removeProperty('--hdrpad');
     return s;
   };
-  window.__scale(vw, vh, bp);
+  window.__scale(vw, vh, bp, z);
 })();
 </script>
 <link rel="stylesheet" href="css/site.css">
