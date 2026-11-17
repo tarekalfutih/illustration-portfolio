@@ -141,7 +141,9 @@
     // Header scale follows the width, but on screens wider than 16:9 (ultrawide) it follows the
     // height instead, so the header doesn't grow out of proportion; the bar then stretches to fill.
     var zW = vw / c.FW, zH = Math.min(zW, Math.max(1, vh / (c.FW * .5625)));
-    var zh = bp >= 3 ? zW : Math.max(.3, (vh - c.HH * zH - 88) / (c.FH - c.HH));
+    // s: zoom of the sections below the hero on screens bigger than 1920x1080 (see the head script).
+    var s = window.__scale ? window.__scale(vw, vh, bp) : 1;
+    var zh = bp >= 3 ? zW : Math.max(.3, (vh - c.HH * zH - 88 * s) / (c.FH - c.HH));
     root.setAttribute('data-bp', bp);
     root.style.setProperty('--z', zH);
     root.style.setProperty('--hdrw', vw / zH + 'px');

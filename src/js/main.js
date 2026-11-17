@@ -5,35 +5,43 @@
   var root = document.documentElement;
   var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var hdr = document.querySelector('.hdr');
+  /* Sections below the hero are zoomed by --s on big screens. S() is that zoom; R() is getBoundingClientRect
+     in screen pixels in every browser (Safari reports boxes inside a zoom without it: data-zl). */
+  var S = function () { return parseFloat(root.style.getPropertyValue('--s')) || 1; };
+  var R = function (el) {
+    var r = el.getBoundingClientRect(), k = S();
+    if (k === 1 || !root.hasAttribute('data-zl') || !el.closest('.zs')) return r;
+    return { top: r.top * k, bottom: r.bottom * k, left: r.left * k, right: r.right * k, width: r.width * k, height: r.height * k };
+  };
   var bar = document.querySelector('[data-cats]');
-  var hdrH = function () { return hdr.getBoundingClientRect().height; };
+  var hdrH = function () { return R(hdr).height; };
 
   /* ---------- In-page scrolling ----------
      Scroll so the target starts right under the sticky header, then re-check once scrolling ends:
      lazy images above the target can shift the layout on the way. */
   var fixTimer = 0;
-  var stickyH = function () { return hdrH() + bar.getBoundingClientRect().height; };
+  var stickyH = function () { return hdrH() + R(bar).height; };
   /* #work lands further down so the Skräphjältarna cover is fully in view. Desktop (≥ 1680px) also
      shows the top 56px of the first spread, unless that would push the cover under the sticky bar.
      Elsewhere: cover bottom + 24px, but never past #picture-books reaching the sticky bar. */
   function workTop() {
-    var y = window.scrollY, rect = function (s) { return document.querySelector(s).getBoundingClientRect(); };
+    var y = window.scrollY, rect = function (s) { return R(document.querySelector(s)); };
     var top = rect('#work').top + y - hdrH(), cv = rect('.book-sk .book-cover');
-    var peek = window.innerWidth >= 1680 ? rect('.spreads img').top + y + 56 - window.innerHeight : null;
-    if (peek !== null && peek <= cv.top + y - stickyH() - 16) {
+    var peek = window.innerWidth >= 1680 ? rect('.spreads img').top + y + 56 * S() - window.innerHeight : null;
+    if (peek !== null && peek <= cv.top + y - stickyH() - 16 * S()) {
       top = Math.max(top, peek);
     } else {
-      var need = cv.bottom + y + 24 - window.innerHeight, cap = rect('#picture-books').top + y - stickyH();
+      var need = cv.bottom + y + 24 * S() - window.innerHeight, cap = rect('#picture-books').top + y - stickyH();
       top = Math.max(top, Math.min(need, cap));
     }
     // Never past the "Selected work" title: it always stays fully visible, 16px under the header.
-    top = Math.min(top, rect('#work-h').top + y - hdrH() - 16);
+    top = Math.min(top, rect('#work-h').top + y - hdrH() - 16 * S());
     return Math.max(0, top);
   }
   function scrollToId(id, extra) {
     var el = document.getElementById(id); if (!el) return;
     var go = function () {
-      var top = id === 'work' ? workTop() : Math.max(0, el.getBoundingClientRect().top + window.scrollY - hdrH() - (extra || 0));
+      var top = id === 'work' ? workTop() : Math.max(0, R(el).top + window.scrollY - hdrH() - (extra || 0));
       if (Math.abs(top - window.scrollY) > 2) window.scrollTo({ top: top, behavior: reduced ? 'auto' : 'smooth' });
     };
     go(); clearTimeout(fixTimer);
@@ -72,7 +80,8 @@
   function sizeIntro() {
     var g = [].filter.call(intro.querySelectorAll('[data-grid]'), function (x) { return x.offsetParent !== null; })[0];
     if (!g) return;
-    var ex = intro.getBoundingClientRect().height - g.getBoundingClientRect().height;
+    // In the intro's own (unzoomed) px, like --extra; Safari (data-zl) already reports those.
+    var ex = (intro.getBoundingClientRect().height - g.getBoundingClientRect().height) / (root.hasAttribute('data-zl') ? 1 : S());
     intro.style.setProperty('--extra', Math.ceil(ex + 2) + 'px');
   }
   document.addEventListener('layout', function () { setTimeout(sizeIntro, 50); });
@@ -134,7 +143,7 @@
       if (picked.indexOf(el) >= 0 || !ok(el)) return;
       if (picked.some(function (o) { return o.contains(el); })) return;
       picked.push(el);
-      if (el.getBoundingClientRect().bottom < 0) return;
+      if (R(el).bottom < 0) return;
       var a = el.animate([{ opacity: 0, transform: 'translateY(40px)' }, { opacity: 1, transform: 'none' }],
         { duration: 900, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' });
       a.pause();
@@ -145,7 +154,7 @@
     window.addEventListener('scroll', function () {
       if (window.scrollY + window.innerHeight < document.documentElement.scrollHeight - 2) return;
       anims.forEach(function (a, el) {
-        if (a.playState === 'paused' && el.getBoundingClientRect().top < window.innerHeight) { io.unobserve(el); a.play(); }
+        if (a.playState === 'paused' && R(el).top < window.innerHeight) { io.unobserve(el); a.play(); }
       });
     }, { passive: true });
   })();
@@ -156,13 +165,13 @@
   var chips = {}, spyCur;
   bar.querySelectorAll('[data-chip]').forEach(function (b) {
     chips[b.getAttribute('data-chip')] = b;
-    b.addEventListener('click', function () { scrollToId(b.getAttribute('data-chip'), bar.getBoundingClientRect().height + 16); });
+    b.addEventListener('click', function () { scrollToId(b.getAttribute('data-chip'), R(bar).height + 16 * S()); });
   });
   function spy() {
-    var off = hdrH() + bar.getBoundingClientRect().height + 40, cur = null, work = document.getElementById('work');
-    CATS.forEach(function (k) { var el = document.getElementById(k); if (el && el.getBoundingClientRect().top <= off) cur = k; });
-    if (!cur && work.getBoundingClientRect().top < window.innerHeight * .6) cur = CATS[0];
-    if (work.getBoundingClientRect().bottom < off) cur = null;
+    var off = hdrH() + R(bar).height + 40 * S(), cur = null, work = document.getElementById('work');
+    CATS.forEach(function (k) { var el = document.getElementById(k); if (el && R(el).top <= off) cur = k; });
+    if (!cur && R(work).top < window.innerHeight * .6) cur = CATS[0];
+    if (R(work).bottom < off) cur = null;
     if (cur === spyCur) return;
     spyCur = cur;
     CATS.forEach(function (k) { if (k === cur) chips[k].setAttribute('aria-current', 'true'); else chips[k].removeAttribute('aria-current'); });
@@ -301,7 +310,7 @@
   img.addEventListener('click', function (e) {
     e.stopPropagation();
     if (moved) { moved = false; return; }
-    var r = img.getBoundingClientRect();
+    var r = R(img);
     setZ(z > 1 ? 1 : 2.5, (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
   });
   img.addEventListener('pointerdown', function (e) {

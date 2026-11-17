@@ -20,6 +20,30 @@
   r.style.setProperty('--z', z);
   r.style.setProperty('--hdrw', vw / z + 'px');
   r.style.setProperty('--hdr', Math.round([80, 80, 72, 72, 60][bp] * z) + 'px');
+  /* Screens bigger than 1920x1080 (QHD, 4K, 8K): everything below the hero is zoomed by --s, the same
+     factor as the header, so text, buttons and spacing grow with the pictures. Browsers differ in how
+     zoom treats vw/vh and getBoundingClientRect, so measure once: --sv divides vw/vh inside the zoom
+     only where the browser multiplies them, and data-zl marks rects reported unzoomed (Safari). */
+  var k = window.__zk;
+  if (!k) {
+    var t = document.createElement('div');
+    t.style.cssText = 'position:absolute;top:0;left:0;visibility:hidden;pointer-events:none';
+    t.innerHTML = '<div style="position:absolute;top:0;left:0"><div style="zoom:2"><div style="width:100px;height:1px"></div></div></div>' +
+      '<div style="position:absolute;top:0;left:0"><div style="zoom:2"><div style="width:10vw;height:1px"></div></div></div>';
+    r.appendChild(t);
+    var px = t.children[0].offsetWidth, v = t.children[1].offsetWidth, ten = vw / 10;
+    k = window.__zk = { zoom: Math.abs(px - 200) < 3, vwMul: Math.abs(v - 2 * ten) < Math.abs(v - ten),
+      local: t.children[0].firstChild.firstChild.getBoundingClientRect().width < 150 };
+    r.removeChild(t);
+  }
+  window.__scale = function (vw, vh, bp) {
+    var s = bp === 0 && k.zoom ? Math.max(1, Math.min(vw / 1920, vh / 1080)) : 1;
+    r.style.setProperty('--s', s);
+    r.style.setProperty('--sv', k.vwMul ? s : 1);
+    if (k.local) r.setAttribute('data-zl', ''); else r.removeAttribute('data-zl');
+    return s;
+  };
+  window.__scale(vw, vh, bp);
 })();
 </script>
 <link rel="stylesheet" href="css/site.css">
@@ -50,13 +74,13 @@
   <!-- js/hero.js builds the artboard for the current layout -->
 </header>
 
-<div class="hero-next">
+<div class="hero-next zs">
   <button type="button" class="hero-next-btn" data-scroll-intro aria-label="Go to introduction" title="Go to introduction">
     <svg width="34" height="20" viewBox="0 0 34 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="bob"><path d="M3 4l14 12L31 4"/></svg>
   </button>
 </div>
 
-<section id="intro" class="intro" aria-labelledby="intro-h">
+<section id="intro" class="intro zs" aria-labelledby="intro-h">
   <div class="intro-top" data-intro>
     <h2 id="intro-h" data-anim="head"><span>Hello</span> <span>and</span> <span>welcome</span> <span>to</span> <span>my</span> <span>portfolio!</span></h2>
     <div class="intro-text" data-anim="para">
@@ -123,7 +147,7 @@
   </div>
 </section>
 
-<section id="work" class="work" aria-labelledby="work-h">
+<section id="work" class="work zs" aria-labelledby="work-h">
   <div class="work-head">
     <h2 id="work-h" class="h-xl">Selected work</h2>
     <p class="work-hint"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6"/></svg>Click any image to open it full size and zoom in.</p>
@@ -308,13 +332,13 @@
   </div>
 </section>
 
-<div class="ruled-link to-top">
+<div class="ruled-link to-top zs">
   <span></span>
   <button type="button" data-to-top aria-label="Back to top">Back to top<span class="circ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg></span></button>
   <span></span>
 </div>
 
-<section id="contact" class="contact" aria-labelledby="contact-h">
+<section id="contact" class="contact zs" aria-labelledby="contact-h">
   <h2 id="contact-h" class="h-xl">Let's make a book together</h2>
   <div class="contact-grid">
     <a href="mailto:tarek.alfutih@hotmail.com"><span class="c-lbl"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email</span><span class="c-val" style="word-break:break-word">tarek.alfutih@hotmail.com</span></a>
@@ -332,7 +356,7 @@
 
 <div class="lb" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
   <div class="lb-sc"><img alt="" draggable="false"></div>
-  <div class="lb-top">
+  <div class="lb-top zs">
     <span class="lb-cap"></span>
     <div class="lb-tools">
       <button type="button" class="lb-btn" data-lb="out" aria-label="Zoom out" title="Zoom out"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M5 12h14"/></svg></button>
@@ -341,9 +365,9 @@
       <button type="button" class="lb-btn lb-close" data-lb="close" aria-label="Close" title="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
   </div>
-  <button type="button" class="lb-btn lb-arrow lb-prev" data-lb="prev" aria-label="Previous image" title="Previous image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M15 5l-7 7 7 7"/></svg></button>
-  <button type="button" class="lb-btn lb-arrow lb-next" data-lb="next" aria-label="Next image" title="Next image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M9 5l7 7-7 7"/></svg></button>
-  <div class="lb-hint"></div>
+  <button type="button" class="lb-btn lb-arrow lb-prev zs" data-lb="prev" aria-label="Previous image" title="Previous image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button type="button" class="lb-btn lb-arrow lb-next zs" data-lb="next" aria-label="Next image" title="Next image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M9 5l7 7-7 7"/></svg></button>
+  <div class="lb-hint zs"></div>
 </div>
 
 <script src="js/hero.js" defer></script>
